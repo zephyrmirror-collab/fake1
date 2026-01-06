@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake Social Message Generator</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tg-dark-bg': '#0e1621',
+                        'tg-dark-header': '#17212b',
+                        'tg-dark-bubble-out': '#2b5278', // Sent message
+                        'tg-dark-bubble-in': '#182533', // Received message (if needed later)
+                        'tg-dark-text': '#ffffff',
+                        'tg-dark-time': '#6c7883', // Or light blueish gray
+
+                        'tg-ios-bg': '#ffffff', // Often has a wallpaper, but plain white for now or pattern
+                        'tg-ios-header': '#f7f7f7', // blurred
+                        'tg-ios-bubble-out': '#007aff',
+                        'tg-ios-text': '#000000',
+
+                        'vk-bg': '#ffffff',
+                        'vk-header': '#ffffff',
+                        'vk-bubble-out': '#cce4ff', // Light blue
+                        'vk-bubble-in': '#f0f2f5',
+                        'vk-text': '#000000',
+                    },
+                    fontFamily: {
+                        'roboto': ['Roboto', 'sans-serif'],
+                        'ios': ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-800 min-h-screen font-sans text-white">
+
+    <!-- App Container -->
+    <div id="app" class="flex flex-col md:flex-row h-screen overflow-hidden">
+
+        <!-- Controls Panel -->
+        <div class="w-full md:w-1/3 bg-gray-900 p-6 overflow-y-auto border-r border-gray-700 z-10">
+            <h1 class="text-2xl font-bold mb-6 text-blue-400">Fake Message Gen</h1>
+
+            <div class="space-y-4">
+                <!-- Style Selector -->
+                <div>
+                    <label class="block text-sm font-medium mb-1">Style</label>
+                    <select id="styleSelect" class="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white focus:outline-none focus:border-blue-500">
+                        <option value="tg-android">Telegram Android (Dark)</option>
+                        <option value="tg-ios">Telegram iOS (Light)</option>
+                        <option value="vk">VKontakte Mobile</option>
+                    </select>
+                </div>
+
+                <!-- Name Input -->
+                <div>
+                    <label class="block text-sm font-medium mb-1">Name</label>
+                    <input type="text" id="nameInput" value="Павел Дуров" class="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white focus:outline-none focus:border-blue-500">
+                </div>
+
+                <!-- Avatar Input -->
+                <div>
+                    <label class="block text-sm font-medium mb-1">Avatar</label>
+                    <input type="file" id="avatarInput" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700">
+                </div>
+
+                <!-- Message Input -->
+                <div>
+                    <label class="block text-sm font-medium mb-1">Message</label>
+                    <textarea id="messageInput" rows="3" class="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white focus:outline-none focus:border-blue-500">Привет! Как дела?</textarea>
+                </div>
+
+                <!-- Time Input -->
+                <div>
+                    <label class="block text-sm font-medium mb-1">Time (HH:MM)</label>
+                    <input type="text" id="timeInput" value="14:30" class="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white focus:outline-none focus:border-blue-500">
+                </div>
+
+                <!-- Read Status Toggle -->
+                <div class="flex items-center justify-between">
+                    <label class="block text-sm font-medium">Message Read</label>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="readToggle" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </label>
+                </div>
+
+                <!-- Download Button -->
+                <div class="pt-4">
+                    <button id="downloadBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded transition duration-200 flex items-center justify-center gap-2">
+                        <i class="fas fa-download"></i> Download Image
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preview Area -->
+        <div class="w-full md:w-2/3 bg-gray-800 flex items-center justify-center p-4 overflow-auto relative">
+            <div class="absolute inset-0 pattern-bg opacity-5 pointer-events-none"></div>
+
+            <!-- The Phone Screen Container -->
+            <div id="previewContainer" class="relative w-[375px] h-[667px] overflow-hidden shadow-2xl transition-all duration-300 transform scale-90 sm:scale-100 origin-center bg-white">
+
+                <!-- Dynamic Content goes here -->
+                <!-- HEADER -->
+                <div id="previewHeader" class="header absolute top-0 left-0 right-0 h-14 flex items-center px-2 z-20">
+                    <!-- Back Arrow -->
+                    <div class="w-10 h-full flex items-center justify-center cursor-pointer">
+                        <i id="headerBackIcon" class="fas fa-arrow-left text-xl"></i>
+                    </div>
+
+                    <!-- Avatar -->
+                    <div class="mr-3">
+                        <img id="previewAvatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23cccccc'%3E%3Ccircle cx='50' cy='50' r='50'/%3E%3Cpath d='M50 50c-13 0-24-11-24-24s11-24 24-24 24 11 24 24-11 24-24 24zm0 8c16 0 44 8 44 24v8H6v-8c0-16 28-24 44-24z' fill='%23ffffff'/%3E%3C/svg%3E" alt="Avatar" class="w-10 h-10 rounded-full object-cover">
+                    </div>
+
+                    <!-- Name & Status -->
+                    <div class="flex-1 overflow-hidden">
+                        <div id="previewName" class="font-bold text-lg leading-tight truncate">Павел Дуров</div>
+                        <div id="previewStatus" class="status text-sm opacity-70 truncate">был(а) недавно</div>
+                    </div>
+
+                    <!-- Header Actions (dots/phone) - aesthetic only -->
+                    <div class="w-10 h-full flex items-center justify-center">
+                        <i id="headerMenuIcon" class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+
+                <!-- MESSAGE AREA -->
+                <div id="previewBody" class="absolute top-14 bottom-0 left-0 right-0 p-3 overflow-y-auto flex flex-col justify-end">
+                     <!-- A fake previous message to make it look realistic? Optional. -->
+                     <!-- Focusing on the main message bubble -->
+
+                     <div class="flex justify-end mb-2">
+                         <div id="messageBubble" class="bubble-out relative max-w-[85%] rounded-lg p-2 shadow-sm">
+                             <div id="previewMessage" class="text-base break-words mb-1">Привет! Как дела?</div>
+
+                             <!-- Meta (Time + Checks) -->
+                             <div id="previewMeta" class="meta-info flex items-end justify-end gap-1 select-none float-right ml-2 mt-1">
+                                 <span id="previewTime" class="text-xs">14:30</span>
+                                 <span id="previewChecks" class="text-xs">
+                                     <!-- Checks will be injected by JS -->
+                                 </span>
+                             </div>
+                         </div>
+                     </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+</html>

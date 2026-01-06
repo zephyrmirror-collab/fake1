@@ -1,0 +1,138 @@
+/* Global resets and utilities */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar styling for controls */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #1f2937;
+}
+::-webkit-scrollbar-thumb {
+    background: #4b5563;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+}
+
+/* =========================================
+   TELEGRAM ANDROID (DARK)
+   ========================================= */
+.style-tg-android {
+    font-family: 'Roboto', sans-serif;
+    background-color: #0e1621; /* tg-dark-bg */
+}
+
+.style-tg-android .header {
+    background-color: #17212b; /* tg-dark-header */
+    color: #ffffff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.style-tg-android .bubble-out {
+    background-color: #2b5278; /* tg-dark-bubble-out */
+    color: #ffffff;
+    border-radius: 6px;
+    /* Telegram android bubbles have slightly rounded corners, but consistent */
+    border-top-right-radius: 0; /* Slight visual tweak, though often it's just a small radius */
+    box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+}
+
+.style-tg-android .meta-info {
+    color: #6c7883; /* tg-dark-time */
+}
+/* Sent check color in TG Android Dark is often green or blueish check depending on version.
+   Actually in dark mode green bubble, the checks are light blue or green.
+   Let's check reference: checks are usually a lighter shade of blue or green. */
+.style-tg-android .check-icon {
+    color: #64b5ef; /* Light blue checks typical for TG dark */
+}
+
+
+/* =========================================
+   TELEGRAM iOS (LIGHT)
+   ========================================= */
+.style-tg-ios {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #ffffff; /* tg-ios-bg */
+    /* Often has a chat background image, but we'll use a pattern or solid white for simplicity/cleanliness unless image provided */
+    background-image: url('https://web.telegram.org/img/bg_0.png'); /* Fallback generic pattern if possible, or just solid */
+    background-size: cover;
+}
+
+.style-tg-ios .header {
+    background-color: rgba(247, 247, 247, 0.85); /* tg-ios-header with backdrop blur simulation */
+    backdrop-filter: blur(10px);
+    color: #000000;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.style-tg-ios .bubble-out {
+    background-color: #007aff; /* Fallback solid */
+    background: linear-gradient(180deg, #007aff 0%, #007aff 100%); /* Blue gradient */
+    color: #ffffff;
+    border-radius: 18px;
+    border-bottom-right-radius: 4px; /* The tail effect */
+}
+
+.style-tg-ios .meta-info {
+    color: rgba(255, 255, 255, 0.7); /* White with opacity for time inside blue bubble */
+}
+
+.style-tg-ios .check-icon {
+    color: #ffffff;
+}
+
+
+/* =========================================
+   VKONTAKTE MOBILE (LIGHT)
+   ========================================= */
+.style-vk {
+    font-family: -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    background-color: #ffffff; /* vk-bg */
+}
+
+.style-vk .header {
+    background-color: #ffffff; /* vk-header */
+    color: #000000;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+}
+
+.style-vk .header .status {
+    color: #818c99;
+}
+
+.style-vk .bubble-out {
+    background-color: #cce4ff; /* vk-bubble-out */
+    color: #000000;
+    border-radius: 12px;
+    border-bottom-right-radius: 4px;
+}
+
+.style-vk .meta-info {
+    color: #5181b8; /* vk blueish text for meta */
+    font-size: 11px;
+}
+
+.style-vk .check-icon {
+    color: #5181b8; /* VK checks usually same blue */
+}
+
+
+/* Specific adjustments */
+
+/* Checkmarks spacing */
+.fa-check-double {
+    font-size: 0.8em;
+}
+
+/* Pattern background for TG iOS if needed to be more authentic,
+   CSS pattern or we assume white for standard 'light' without wallpaper */
+.bg-tg-pattern {
+    background-color: #728799; /* Fallback */
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%239ca3af' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+}
